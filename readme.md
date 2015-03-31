@@ -22,7 +22,7 @@ Leon will try to merge most tags and classes, drop empty element and useless spa
 Pass an object containing the following. At the time, the defaults are simply overriden with your object. Will do a real
 extend method soon.
 
-	var config = 
+	var config = {
 		// Do we need to remove empty elements
 		// Take care, for now, this one does not check much before deleting
 		removeEmptyTags: false,
