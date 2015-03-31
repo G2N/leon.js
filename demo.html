@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>leon.js | Cleans up your dirty HTML to valid and sexy HTML5</title>
+	<style>
+		textarea {
+			width: 100%;
+			height: 400px;
+			font-size: .825rem;
+		}		
+	</style>
+</head>
+<body>
+	<h1>leon.js | HTML Cleaner</h1>
+	<textarea name="myhtml" id="myhtml" cols="30" rows="10"></textarea>
+	
+	<p>
+		<button id="cleanup">Clean up !</button>
+	</p>
+	
+	<script src="src/leon.js"></script>
+	<script>
+	
+		var leon = new leon(),
+			textarea = document.getElementById('myhtml'),
+			cleanBtn = document.getElementById('cleanup');
+		
+		cleanBtn.addEventListener('click', function() {
+			var cleanHTML = leon.cleanUp( textarea.value );
+			textarea.value = cleanHTML;
+		});
+		
+	</script>
+</body>
+</html>
