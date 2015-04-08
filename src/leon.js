@@ -21,7 +21,7 @@ var leon = (function(rules) {
 		 *  - addClass: 		Automatically add a class to the element.
 		 *  					Multiple class names must be space separated
 		 *
-		 *  - check_attributes: [TODO] Sanitizes attributes contents
+		 *  - checkAttributes: [TODO] Sanitizes attributes contents
 		 */
 		tags: {
 			font: { 
@@ -116,7 +116,7 @@ var leon = (function(rules) {
 	 */
 	function _walk(parent) {	
 		Array.prototype.map.call(parent.children, function(child) {
-			_handleAttributes(child);
+			child = _handleAttributes(child);
 			// Reassign the element each time, because it might have been replaced by something else
 			// ie: <font> becomes <span>
 			child = _handleNode(child);
@@ -144,13 +144,17 @@ var leon = (function(rules) {
 	 * @param {Object} elem The element
 	 */
 	function _handleAttributes(elem) {
-		var attributes = elem.attributes;
+		var attributes = [];
 		
-		if(!attributes.length) {
-			return;
+		for(var i = 0, l = elem.attributes.length; i < l; i++) {
+			attributes.push(elem.attributes[i]);
 		}
 		
-		Array.prototype.map.call(attributes, function(attribute) {
+		if(!attributes.length) {
+			return elem;
+		}
+		
+		attributes.map(function(attribute) {
 			switch(attribute.name) {
 				case 'style':
 					_parseStyles(elem);
@@ -173,7 +177,9 @@ var leon = (function(rules) {
 					elem.removeAttribute(attribute.name);
 					break;
 			}
-		});		
+		});
+		
+		return elem;
 	}
 	
 	/**
