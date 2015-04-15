@@ -197,6 +197,10 @@ var leon = (function(rules) {
 			return elem;
 		}
 		
+		if(tagName === 'img' && !elem.getAttribute('alt')) {
+			elem.setAttribute('alt', 'Image: ' + elem.getAttribute('src') );
+		}
+		
 		if(parseRules.tags[tagName]) {
 			// Remove tag and contents
 			if(parseRules.tags[tagName].remove) {
