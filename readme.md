@@ -32,14 +32,18 @@ extend method soon.
 		 * Their classes and attributes will be parsed though
 		 * The following options are available:
 		 * 
-		 *  - rename: 		Rename to the given tagname
+		 *  - rename: 			Rename to the given tagname
 		 *  
-		 *  - remove: 		Remove the element and its content
+		 *  - remove: 			Remove the element and its content
 		 *  
-		 *  - unwrap: 		Replaces the element with its contents
+		 *  - unwrap: 			Replaces the element with its contents
 		 *  
-		 *  - addClass: 	Automatically add a class to the element.
-		 *  				Multiple class names must be space separated
+		 *  - addClass: 		Automatically add a class to the element.
+		 *  					Multiple class names must be space separated
+		 *
+		 *  - checkAttributes: 	Verifies attributes and removes if it does not pass
+		 * 						For now, the only test is for integers
+		 						See example below
 		 */
 		tags: {
 			font: { 
@@ -51,6 +55,12 @@ extend method soon.
 			}
 			i: {
 				rename: 'em'
+			},
+			img: {
+				checkAttributes: {
+					width: 'integer',
+					height: 'integer'
+				}
 			}
 		},
 		/**
