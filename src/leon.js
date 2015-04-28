@@ -21,7 +21,8 @@ var leon = (function(rules) {
 		 *  - addClass: 		Automatically add a class to the element.
 		 *  					Multiple class names must be space separated
 		 *
-		 *  - checkAttributes: [TODO] Sanitizes attributes contents
+		 *  - checkAttributes: 	Checks attributes contents and removes if it does not comply
+		 *  	- integer: 		Allows non negative integer (ie: <img width="100">)
 		 */
 		tags: {
 			font: { 
@@ -32,7 +33,35 @@ var leon = (function(rules) {
 			},
 			i: {
 				rename: 'em'
+			},
+			table: {
+				rename: 'div'
+			},
+			tbody: {
+				rename: 'div'
+			},
+			tfoot: {
+				rename: 'div'
+			},
+			thead: {
+				rename: 'div'
+			},
+			tr: {
+				rename: 'div'
+			},
+			th: {
+				rename: 'div'
+			},
+			td: {
+				rename: 'div'
+			},
+			img: {
+				checkAttributes: {
+					width: 'integer',
+					height: 'integer'
+				}
 			}
+			
 		},
 		/**
 		 * A whitelist of authorized classes
@@ -153,7 +182,7 @@ var leon = (function(rules) {
 		if(!attributes.length) {
 			return elem;
 		}
-		
+
 		attributes.map(function(attribute) {
 			switch(attribute.name) {
 				case 'style':
@@ -174,7 +203,7 @@ var leon = (function(rules) {
 				case 'title':
 					break;
 				default:
-					elem.removeAttribute(attribute.name);
+					_checkAttribute(elem, attribute.name);
 					break;
 			}
 		});
@@ -269,6 +298,32 @@ var leon = (function(rules) {
 			value = _reformatColor(value);
 		}
 		_applyClassFromAttr(elem, attribute, value);
+	}
+	
+	/**
+	 * If the tag has a checkAttributes rule corresponding to the attribute, verifies it and removes if it does not check
+	 * @param {Object} elem      The element
+	 * @param {String} attribute The attribute's name
+	 */
+	function _checkAttribute(elem, attribute) {
+		var rule;
+
+		try {
+			rule = parseRules.tags[elem.tagName.toLowerCase()].checkAttributes[attribute];
+			if(!rule) {
+				throw 'No rule';
+			}
+			switch(rule) {
+				case 'integer':
+					if(!elem.getAttribute(attribute).match(/^[0-9]{1,}$/)) {
+						throw 'Not an integer';
+					}
+			}
+		}
+		catch(e) {
+			elem.removeAttribute(attribute);
+		}
+		
 	}
 	
 	/**
