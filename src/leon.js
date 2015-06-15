@@ -400,6 +400,12 @@ var leon = (function(rules) {
 	function _purgeClassName(elem) {
 		var classes = elem.className.split(' ');
 		
+		// If there is no class, remove the attribute
+		if(elem.className.trim() === '') {
+			elem.removeAttribute('class');
+			return;
+		}
+		
 		// Check every class applied
 		for(var i = 0, l = classes.length; i < l; i++) {
 			if(!parseRules.classes[classes[i]]) {
@@ -408,7 +414,7 @@ var leon = (function(rules) {
 		}
 		
 		// If there is no class left, remove the attribute
-		if(elem.className === '') {
+		if(elem.className.trim() === '') {
 			elem.removeAttribute('class');
 		}
 	}
